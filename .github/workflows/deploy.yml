@@ -1,4 +1,5 @@
 # https://github.com/actions/starter-workflows/blob/main/ci/azure.yml
+# https://docs.microsoft.com/fr-fr/azure/app-service/deploy-container-github-action?tabs=service-principal#deploy-to-an-app-service-container
 name: Deploy hello-prod
 
 # Run this workflow every time a new commit pushed to your repository
@@ -30,10 +31,21 @@ jobs:
       
       - name: Build with Maven
         run: mvn -B package
+
+      - name: Login via Azure CLI
+        uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
       
       - name: Deploy
         uses: Azure/webapps-deploy@v2
         with:
           app-name: ${{ env.AZURE_WEBAPP_NAME }}
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: target/*.jar
+          # publish-profile
+          # startup-command
+          # publish-profile
+
+      - name: Azure logout
+        run: |
+          az logout

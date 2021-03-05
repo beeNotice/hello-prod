@@ -1,0 +1,63 @@
+= Hello Prod
+:docinfo1:
+:hardbreaks:
+:sectanchors:
+:sectnums:
+:icons: font
+:toc: left
+:toc-title: Sommaire
+:description: Hello Prod
+
+== Steps
+
+* https://github.com/beeNotice/hello-prod[Application]
+  ** https://spring.io/projects/spring-boot[Create Spring boot Application]
+  ** https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html[Actuator]
+* https://github.com/beeNotice/hello-prod-deploy[Initialisation de l'infrastructure]
+  ** https://github.com/terraform-providers/terraform-provider-azurerm/tree/master/examples
+* Déploiement
+  ** https://github.com/actions/starter-workflows/blob/main/ci/azure.yml
+  ** https://docs.microsoft.com/fr-fr/azure/app-service/deploy-container-github-action?tabs=service-principal
+
+
+== Application
+
+=== Decisions
+
+* Utilisation de logback-spring.xml pour la configuration des logs plutôt via via application.yml / Séparation configuration des logs
+  ** https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-logging
+* Utilisation du profile spring pour la gestion des configurations d'environnement / Fonctionnement spring-boot
+  ** https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config
+* Utilisation .yml au lieu de .properties, question de goût !
+  ** https://docs.spring.io/spring-boot/docs/current/reference/html/spring-boot-features.html#boot-features-external-config-yaml 
+* Utilisation d'un principal de service pour le déploiement, au lieu de la préco d'utilisation du profile de publication
+  ** Utilisation de la clé de publication de Git pose problème car elle change à chaque fois, il faudrait la mettre à jour dans Git en même temps que le provisionnement 
+  ** Sans doute à revoir sur une cible ou l'on ne détruit pas tout à chaque fois, car ici on a un Principal de service qui possède des droits au niveau de la souscription
+  ** https://docs.microsoft.com/fr-fr/azure/app-service/deploy-container-github-action?tabs=service-principal
+
+
+=== Usage
+
+[source,cmd]
+----
+# Hello
+curl --location --request GET 'http://localhost:8080/hello-world?name=Lol'
+
+# Actuator
+curl --location --request GET 'http://localhost:8080/management'
+----
+
+
+== Annexes
+
+=== Documentation
+
+* https://docs.microsoft.com/fr-fr/azure/architecture/reference-architectures/app-service-web-app/basic-web-app[Architecture de référence]
+
+== TODO 
+
+* Excel des conventions Azure
+* Coûts de build Github Actions
+* Vérifier tous les paramètres spring-boot à activer sur production
+* Sécurisation heatlh
+
