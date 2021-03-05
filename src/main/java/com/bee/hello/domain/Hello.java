@@ -1,5 +1,6 @@
 package com.bee.hello.domain;
 
+// Use records when available !
 public class Hello {
 
   private final long id;

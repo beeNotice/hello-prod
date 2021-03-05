@@ -2,23 +2,27 @@ package com.bee.hello.controller;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.bee.hello.domain.Hello;
 
-@Controller
+@RestController
 public class HelloController {
-  
-  private static final String template = "Hello, %s!";
+
+  private static final String DEFAULT_NAME = "Stranger";
+
   private final AtomicLong counter = new AtomicLong();
-  
+
+  @GetMapping("/")
+  public Hello sayHello() {
+    return sayHello(DEFAULT_NAME);
+  }
+
   @GetMapping("/hello-world")
-  @ResponseBody
-  public Hello sayHello(@RequestParam(name="name", required=false, defaultValue="Stranger") String name) {
-    return new Hello(counter.incrementAndGet(), String.format(template, name));
+  public Hello sayHello(@RequestParam(name = "name", required = false, defaultValue = DEFAULT_NAME) String name) {
+    return new Hello(counter.incrementAndGet(), String.format("Hello, %s!", name));
   }
 
 }

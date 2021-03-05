@@ -49,8 +49,7 @@ curl --location --request GET 'http://localhost:8080/management'
 # TODO
 
 * Excel des conventions Azure
-* Convention nomage Github actions
 * Coûts de build Github Actions
-* Vérifier tous les paramètres spring-boot par à activer sur production
+* Vérifier tous les paramètres spring-boot à activer sur production
 * Sécurisation heatlh
 
