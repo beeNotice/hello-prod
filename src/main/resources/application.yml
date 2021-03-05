@@ -1,0 +1,19 @@
+spring:
+  application:
+      name: hello-prod
+  profiles:
+    active: local, prod
+
+
+server:
+  servlet:
+    session:
+      cookie:
+        http-only: true
+
+management:
+  endpoints:
+    web:
+      base-path: /management
+      exposure:
+        include: '*'
