@@ -34,8 +34,8 @@ jobs:
 
       - name: Login via Azure CLI
         uses: azure/login@v1
-          with:
-            creds: ${{ secrets.AZURE_CREDENTIALS }}
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
       
       - name: Deploy
         uses: Azure/webapps-deploy@v2
