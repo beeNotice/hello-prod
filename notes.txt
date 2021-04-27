@@ -1,0 +1,109 @@
+== Intro
+
+Goal : application code to container to running on K8s
+
+Steps
+
+* Ideally we want to see code in your IDE
+* Some docker CLI
+* A registry
+* Some K8s command line
+* A resulting app running
+* Explore additional dimensions thru a conversation.
+
+== Strategy
+
+https://docs.microsoft.com/fr-fr/azure/developer/java/migration/migrate-spring-boot-to-azure-kubernetes-service
+https://docs.microsoft.com/fr-fr/azure/aks/tutorial-kubernetes-prepare-app
+https://docs.microsoft.com/fr-fr/learn/modules/build-and-store-container-images/
+
+
+https://github.com/Azure-Samples/java-on-aks
+https://docs.microsoft.com/fr-fr/azure/developer/java/spring-framework/deploy-spring-boot-java-app-on-kubernetes
+
+
+== Tools
+
+Maven
+
+=== Jib
+
+* Google also has an open source tool called Jib
+* Probably the most interesting thing about this approach is that you do not need a Dockerfile
+* Also, it can work in environments where docker is not installed
+
+== Spring boot
+
+https://docs.spring.io/spring-boot/docs/2.4.5/reference/htmlsingle/#production-ready-kubernetes-probes
+https://spring.io/guides/gs/spring-boot-docker/
+https://spring.io/guides/topicals/spring-boot-docker
+
+== Components
+
+* Service Principal
+* Azure Container Registry
+* Azure Kubernetes Service
+* Key Vault => ???
+
+=== Warning
+
+https://docs.microsoft.com/fr-fr/azure/developer/java/migration/migrate-spring-boot-to-azure-kubernetes-service
+
+* file system
+* scheduled jobs
+* connection to on-premises is needed
+* OS-specific code
+
+== Spring boot Docker
+
+https://github.com/spring-guides/gs-spring-boot-docker
+https://github.com/Azure/spring-boot-container-quickstart
+
+=== Local test
+
+https://docs.microsoft.com/fr-fr/azure/developer/java/migration/migrate-spring-boot-to-azure-kubernetes-service
+"Alternatively, you can use Docker CLI to first build and test the image locally"
+
+== Docker
+
+https://spring.io/guides/topicals/spring-boot-docker
+
+# Build
+docker build -t spring-boot .
+
+# Run
+docker run -p 8080:8080 -d spring-boot
+docker run -e "SPRING_PROFILES_ACTIVE=prod" -p 8080:8080 -d spring-boot
+
+# List of containers
+docker ps
+
+# Stop
+docker stop {name}
+
+
+# Exec shell
+docker run --name myapp -ti --entrypoint /bin/sh myorg/myapp
+docker exec -ti myapp /bin/sh
+
+
+== Kubernetes
+
+# Stream logs
+kubectl logs -f --timestamps=true -l app={app}
+
+== Going further
+
+* https://docs.microsoft.com/fr-fr/azure/aks/quickstart-helm
+* https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment
+* https://docs.microsoft.com/fr-fr/azure/aks/cluster-autoscaler
+* https://docs.oracle.com/javase/8/embedded/develop-apps-platforms/codecache.htm
+
+Version
+
+
+== Run
+
+=== Local
+
+Start Docker Daemon

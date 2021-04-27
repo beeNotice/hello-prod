@@ -2,16 +2,31 @@ spring:
   application:
       name: hello-prod
   profiles:
-    active: local, prod
+    # Last wins : local, prod
+    active: local
 
-
+# https://docs.spring.io/spring-boot/docs/2.4.5/reference/htmlsingle/#common-application-properties
 server:
   servlet:
     session:
       cookie:
+        # Whether to use "HttpOnly" cookies for session cookies => No Js access
         http-only: true
 
+info:
+  app:
+    # Reuse declared variable
+    name: ${spring.application.name}
+    # Retrieve data from pom.xml
+    version: "@project.version@"
+
 management:
+  endpoint:
+    health:
+      # Required role to access endpoints
+      roles: ROLE_ADMIN
+      # Details are only shown to authorized users
+      show-details: when-authorized
   endpoints:
     web:
       exposure:

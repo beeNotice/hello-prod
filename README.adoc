@@ -8,16 +8,31 @@
 :toc-title: Sommaire
 :description: Hello Prod
 
-== Steps
+== Design
+
+=== Plan / Sizing
+
+* https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits#app-service-limits
+=> Slot disponibles à partir du standard
+
+* https://docs.microsoft.com/fr-fr/azure/postgresql/concepts-pricing-tiers
+* https://docs.microsoft.com/fr-fr/azure/postgresql/concepts-limits
+=> Garantie D'IOPS à partir de General Purpose
+
+== Etapes de mise en oeuvre
 
 * https://github.com/beeNotice/hello-prod[Application]
   ** https://spring.io/projects/spring-boot[Create Spring boot Application]
   ** https://docs.spring.io/spring-boot/docs/current/reference/html/production-ready-features.html[Actuator]
 * https://github.com/beeNotice/hello-prod-deploy[Initialisation de l'infrastructure]
-  ** https://github.com/terraform-providers/terraform-provider-azurerm/tree/master/examples
 * Déploiement
   ** https://github.com/actions/starter-workflows/blob/main/ci/azure.yml
   ** https://docs.microsoft.com/fr-fr/azure/app-service/deploy-container-github-action?tabs=service-principal
+  ** Configuration applicative azurerm_app_service / app_settings pour utiliser le profil prod
+* Hello Prod
+  ** Ajout App Insight => Composant Terraform + Configuration azurerm_app_service / app_settings
+  ** Ajout health check App Service
+  ** Add log retention
 
 
 == Application
@@ -47,17 +62,31 @@ curl --location --request GET 'http://localhost:8080/hello-world?name=Lol'
 curl --location --request GET 'http://localhost:8080/management'
 ----
 
-
 == Annexes
 
 === Documentation
 
 * https://docs.microsoft.com/fr-fr/azure/architecture/reference-architectures/app-service-web-app/basic-web-app[Architecture de référence]
+* https://channel9.msdn.com/Shows/Azure-Friday/Operational-best-practices-for-web-apps-on-Azure-App-Service[App Service Operational best practices]
 
 == TODO 
 
 * Excel des conventions Azure
-* Coûts de build Github Actions
 * Vérifier tous les paramètres spring-boot à activer sur production
 * Sécurisation heatlh
+* Utilisation des slots de déploiement => staging
+* Key Vault
+    ** https://docs.microsoft.com/en-us/java/api/overview/azure/spring-boot-starter-keyvault-secrets-readme?view=azure-java-stable
+    ** https://docs.microsoft.com/en-us/azure/app-service/overview-managed-identity?tabs=dotnet
+* Configuration Timezone Logs
+* Log Analytics
+* Création d'alertes 
+  ** Sur des métriques / Dynamic ou threshold
+  ** Sur des logs
+* Lancement de smoke tests sur l'application déployées
+* build.properties
+
+
+https://channel9.msdn.com/Shows/Azure-Friday/Testing-in-production-with-Azure-App-Service : 8.26
+
 

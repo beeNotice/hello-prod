@@ -1,4 +1,12 @@
 spring:
+  # https://docs.spring.io/spring-boot/docs/2.4.5/reference/htmlsingle/#boot-features-security
+  security:
+    # In memory user
+    user:
+      name: admin
+      password: f505db0a-9d14-4181-9288-3d0838be17e9
+      roles: ADMIN
+  # Color console
   output:
     ansi:
       enabled: ALWAYS
