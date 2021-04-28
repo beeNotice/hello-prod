@@ -19,11 +19,8 @@
     <description>Demo project for Hello Prod</description>
 
     <properties>
-
-        <!-- Docker configuration -->
         <jib-maven-plugin.version>2.8.0</jib-maven-plugin.version>
         <docker.image.prefix>beenotice.azurecr.io</docker.image.prefix>
-
         <java.version>11</java.version>
     </properties>
 
@@ -44,11 +41,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
@@ -63,11 +55,13 @@
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
+            <!-- https://spring.io/guides/topicals/spring-boot-docker -->
             <plugin>
                 <artifactId>jib-maven-plugin</artifactId>
                 <groupId>com.google.cloud.tools</groupId>
@@ -78,6 +72,10 @@
                     </from>
                     <to>
                         <image>${docker.image.prefix}/${project.artifactId}</image>
+                        <tags>
+                            <tag>latest</tag>
+                            <tag>${project.version}</tag>
+                        </tags>
                     </to>
                 </configuration>
             </plugin>

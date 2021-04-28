@@ -16,8 +16,6 @@ Steps
 https://docs.microsoft.com/fr-fr/azure/developer/java/migration/migrate-spring-boot-to-azure-kubernetes-service
 https://docs.microsoft.com/fr-fr/azure/aks/tutorial-kubernetes-prepare-app
 https://docs.microsoft.com/fr-fr/learn/modules/build-and-store-container-images/
-
-
 https://github.com/Azure-Samples/java-on-aks
 https://docs.microsoft.com/fr-fr/azure/developer/java/spring-framework/deploy-spring-boot-java-app-on-kubernetes
 
@@ -31,6 +29,17 @@ Maven
 * Google also has an open source tool called Jib
 * Probably the most interesting thing about this approach is that you do not need a Dockerfile
 * Also, it can work in environments where docker is not installed
+
+https://github.com/GoogleContainerTools/jib/blob/master/docs/faq.md
+
+# Deploy build to remote
+az acr login -n beenotice
+mvnw compile jib:build
+
+# Local build
+mvnw compile jib:dockerBuild
+
+NOTE : With my usage, local Docker is required
 
 == Spring boot
 
@@ -70,6 +79,7 @@ https://spring.io/guides/topicals/spring-boot-docker
 
 # Build
 docker build -t spring-boot .
+docker images
 
 # Run
 docker run -p 8080:8080 -d spring-boot
@@ -81,16 +91,54 @@ docker ps
 # Stop
 docker stop {name}
 
+docker images
+docker image rm beenotice.azurecr.io/hello-prod:0.0.1-SNAPSHOT
 
 # Exec shell
 docker run --name myapp -ti --entrypoint /bin/sh myorg/myapp
 docker exec -ti myapp /bin/sh
 
+== Repository
+
+az acr repository list --name beenotice --output table
+az acr repository show-tags --name beenotice --repository hello-prod --output table
 
 == Kubernetes
 
+https://spring.io/guides/gs/spring-boot-kubernetes/
+
+# Generate file deployment
+kubectl create deployment hello-prod --image=beenotice.azurecr.io/hello-prod --dry-run=client -o=yaml > deployment.yml
+kubectl expose pod hello-prod --type=LoadBalancer --port=80 --target-port=8080 --dry-run=client -o=yaml >> deployment.yml
+
+NOTE : Add --- between steps
+
+Can then be used with kubectl apply -f deployment.yml
+
 # Stream logs
 kubectl logs -f --timestamps=true -l app={app}
+
+kubectl cluster-info
+kubectl get all
+
+# Kubernetes checks : https://kubernetes.io/fr/docs/reference/kubectl/cheatsheet/
+kubectl get services
+kubectl get pods
+kubectl describe pods hello-prod
+
+kubectl get nodes
+kubectl get pods hello-prod
+
+# Public IP
+kubectl get services -o=jsonpath='{.items[*].status.loadBalancer.ingress[0].ip}'
+kubectl logs hello-prod
+kubectl exec hello-prod -- ps -ef
+
+kubectl scale --replicas=2 deployment/hello-prod
+kubectl get pods
+
+kubectl delete pod,service hello-prod
+kubectl delete -f C:/Dev/workspace/hello-prod/deployment.yml
 
 == Going further
 
@@ -98,9 +146,10 @@ kubectl logs -f --timestamps=true -l app={app}
 * https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#rolling-update-deployment
 * https://docs.microsoft.com/fr-fr/azure/aks/cluster-autoscaler
 * https://docs.oracle.com/javase/8/embedded/develop-apps-platforms/codecache.htm
+* https://docs.microsoft.com/fr-fr/azure/azure-monitor/containers/container-insights-enable-new-cluster#enable-using-terraform
+* https://docs.microsoft.com/fr-fr/azure/developer/terraform/create-k8s-cluster-with-tf-and-aks
 
 Version
-
 
 == Run
 

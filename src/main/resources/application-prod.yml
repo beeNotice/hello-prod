@@ -3,4 +3,3 @@ server:
     enabled: true
   http2:
     enabled: true
-
