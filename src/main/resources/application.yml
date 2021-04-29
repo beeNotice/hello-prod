@@ -34,6 +34,8 @@ management:
       roles: ROLE_ADMIN
       # Details are only shown to authorized users
       show-details: when-authorized
+    shutdown:
+      enabled: true
   endpoints:
     web:
       exposure:

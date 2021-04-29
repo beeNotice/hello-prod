@@ -22,10 +22,4 @@ public class HelloController {
     return new Hello(counter.incrementAndGet(), String.format("Hello, %s!", name));
   }
 
-  @GetMapping("/exit")
-  public void exit() {
-    LOG.warn("System is existing");
-    System.exit(-1);
-  }
-
 }

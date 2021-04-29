@@ -12,6 +12,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     http
+        // Required to used the POST on shutdown endpoint
+        .csrf().ignoringAntMatchers("/actuator/**").and()
         .authorizeRequests()
         .antMatchers("/").permitAll()
         .antMatchers("/actuator/health").permitAll()
