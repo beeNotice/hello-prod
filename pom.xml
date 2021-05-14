@@ -61,6 +61,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
 
+            <!-- AKS Usage -->
             <!-- https://spring.io/guides/topicals/spring-boot-docker -->
             <plugin>
                 <artifactId>jib-maven-plugin</artifactId>
@@ -77,6 +78,41 @@
                             <tag>${project.version}</tag>
                         </tags>
                     </to>
+                </configuration>
+            </plugin>
+
+            <!-- App Service Usage -->
+            <plugin>
+                <groupId>com.microsoft.azure</groupId>
+                <artifactId>azure-webapp-maven-plugin</artifactId>
+                <version>1.14.0</version>
+                <configuration>
+                    <schemaVersion>v2</schemaVersion>
+
+                    <!-- Web App information -->
+                    <resourceGroup>rg-hello-dev</resourceGroup>
+                    <appName>azapp-hello-app-dev</appName>
+
+                    <!-- Existing App Service Plan -->
+                    <region>francecentral</region>
+                    <appServicePlanName>azapp-hello-plan-dev</appServicePlanName>
+                    <appServicePlanResourceGroup>rg-hello-dev</appServicePlanResourceGroup>
+
+                    <!-- Deployment Slot Setting -->
+                    <deploymentSlot>
+                        <name>staging</name>
+                    </deploymentSlot>
+
+                    <deployment>
+                        <resources>
+                            <resource>
+                                <directory>${project.basedir}/target</directory>
+                                <includes>
+                                    <include>*.jar</include>
+                                </includes>
+                            </resource>
+                        </resources>
+                    </deployment>
                 </configuration>
             </plugin>
 

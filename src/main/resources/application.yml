@@ -26,6 +26,8 @@ info:
     name: ${spring.application.name}
     # Retrieve data from pom.xml
     version: "@project.version@"
+    # Sample for deployment variable configuration
+    hello: hello-${spring.profiles.active}
 
 management:
   endpoint:
@@ -33,7 +35,7 @@ management:
       # Required role to access endpoints
       roles: ROLE_ADMIN
       # Details are only shown to authorized users
-      show-details: when-authorized
+      show-details: when_authorized
     shutdown:
       enabled: true
   endpoints:
